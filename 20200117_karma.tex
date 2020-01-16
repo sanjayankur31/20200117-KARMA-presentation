@@ -8,8 +8,11 @@
 \usepackage[scale=2]{ccicons}
 \usepackage{amssymb}
 \usepackage{tikz}
-\usetikzlibrary{arrows.meta, arrows}
+\usetikzlibrary{mindmap, arrows.meta, positioning, arrows}
 \usepackage{pgfplots}
+% Define the colours we use for E and I in all graphs
+\definecolor{SinhaBlueE}{HTML}{3b4cc0}
+\definecolor{SinhaRedI}{HTML}{f7a789}
 \pgfmathdeclarefunction{gaussnew}{4}{%nu, eta, eps, omega
   \pgfmathparse{(#1*((2*exp(-(((x-((#2+#3)/2))/((#2-#3)/(2*sqrt(-ln(#4/2)))))^2))) -#4))}%chktex 36
 }
@@ -20,7 +23,8 @@
 \usepackage[style=nature,backend=biber,autocite=footnote]{biblatex}
 \addbibresource{/home/asinha/Documents/01_Readables/00_research_papers/masterbib.bib}
 % Use opensans
-\usepackage[default,scale=0.95]{opensans}
+% \usepackage[default,scale=0.95]{opensans}
+\usepackage[sfdefault]{roboto}
 % for strike through
 \usepackage[normalem]{ulem}
 % links, urls, refs
@@ -51,14 +55,17 @@
 % Not needed in metropolis, but in general footnote citation fixes: https://tex.stackexchange.com/questions/44217/how-can-i-stop-footcite-from-hijacking-my-beamer-columns
 % how to use multiple references to the same footnote: https://tex.stackexchange.com/questions/27763/beamer-multiple-references-to-the-same-footnote
 
+% Disable footnoterule
+\renewcommand{\footnoterule}{}
+
 %% title %%
-\title{Investigating the activity dependent dynamics of synaptic structures using biologically realistic modelling of peripheral lesion experiments}
-\subtitle{Discussion of my Ph.D. research}
-\author[Ankur Sinha]{Ankur Sinha}
-\date{29/03/2019}
+\title{Investigating structural plasticity in brain networks using computational modelling}
+\author[Ankur Sinha]{Ankur Sinha\\PhD candidate\\Biocomputation Research Group\\University of Hertfordshire.}
+\date{17/01/2020}
 
 %% document begins %%
 \begin{document}
+
 
 % title frame %%
 \begin{frame}
@@ -67,63 +74,94 @@
 
 %% Three slides for 5 minutes seems good
 %% So, 30 slides at most for 50 minutes
-\section{Context}
-\begin{frame}[c]{Plasticity while maintaining stability}
-  \begin{figure}[h]
-    \includegraphics[width=1.05\linewidth]{99_images/Plasticity.pdf}
-  \end{figure}
-  \note[item]{We know there are multiple plasticity mechanisms active all at once. Hebbian plasticity underlies learning, but de-stabilises networks. Homeostatic plasticity ensures that even when learning occurs, the network remains in a stable state}
-  \note[item]{Generally, though, when we speak of these, we refer to synaptic plasticity only. But, lots of evidence now confirms that, in fact, structural plasticity is active in the adult brain. So not only are synaptic weights changing, the connectivity of networks is changing too!}
-  \note[item]{So, it isn't hard to imaging how if changes in synaptic strengths makes plasticity-stability an issue, how the removal and formation of whole synapses would have a much larger effect to plasticity-stability.}
-  \note[item]{For the purpose of our analysis, we do not consider the modulation of synaptic strengths as structural plasticity (even though it is).}
+\section{Context: what and why?}
+\begin{frame}[c]{The plastic---but stable---brain: Hebbian/Homeostatic plasticity}
+  \pause{}
+  \begin{itemize}
+    \item \enquote{Neurons that fire together, wire together.}\footnotemark[1]{}
+      \pause{}
+    \item \enquote{The more things change, the more they stay the same.}\footnotemark[2]{}
+  \end{itemize}
+  \footnotetext[1]<2->{\fullcite{Hebb1949}}
+  \footnotetext[2]<3->{\fullcite{Turrigiano1999}}
 \end{frame}
-\begin{frame}[c]{Synaptic structures are dynamic in the adult brain}
-  \note[item]{In the adult brain, now that we have the tech to look in at the microscopic structures that form synapses, we see that these are highly dynamic. They sprout and retract, forming and removing synapses. However, this must happen in a way that the brain remains functional: so, are their Hebbian and Homeostatic components of structural plasticity too?}
-  \tiny{
-  \begin{enumerate}
-    \item \fullcite{Chen2011}
-    \item \fullcite{Marik2010}
-    \item \fullcite{Marik2014}
-    \item \fullcite{Stettler2006}
-    \item \fullcite{Gogolla2007}
-    \item \fullcite{Holtmaat2005}
-    \item \fullcite{Chen2012}
-    \item \fullcite{Trachtenberg2002}
-    \item \fullcite{Villa2016}
-  \end{enumerate}
-  }
+\begin{frame}[c]{Synaptic plasticity: the popular plasticity}
+  \begin{itemize}
+    \item changes in efficacy of \alert{existing} synapses,
+      \pause{}
+    \item changes in structure are ignored\footnote[1]{Even though structural changes in spines and boutons underlie modulation of synaptic efficacy.}.
+  \end{itemize}
 \end{frame}
-\begin{frame}[c]{Evidence of homeostatic structural plasticity: lesion studies}
-  \note[item]{The simplest way of studying homeostatic mechanism is to nudge the network out of its stable state. Lesion studies have, for a long time, observed structural changes after peripheral lesioning. A peripheral lesion is where you dont destroy the network itself, but you disrupt the input to it---we'll come to this in detail later.}
-  \tiny{
-    \begin{enumerate}
+\begin{frame}[c]{What underlies large scale reorganisation?}
+  \begin{itemize}
+    \item \fullcite{Rasmusson1982}
+  \pause{}
+  \scriptsize{
       \item \fullcite{Wall1984}
-      \item \fullcite{Rasmusson1982}
-      \item \fullcite{Rajan1993}
-      \item \fullcite{Pons1991}
-      \item \fullcite{Allard1991}
-      \item \fullcite{Darian-Smith1994}
-      \item \fullcite{Darian-Smith1995}
-      \item \fullcite{Florence1998}
+      \item \fullcite{Merzenich1984}
+      \item \fullcite{Calford1988}
       \item \fullcite{Heinen1991}
-    \end{enumerate}
-  }
+      \item \fullcite{Rajan1993}
+      }
+  \end{itemize}
 \end{frame}
-\begin{frame}[c]{Detailed lesion experiments to study synaptic structures}
-  \note[item]{With more tech, neuroscientists have been able to mark, track, and analyse micro-structures that are involved in synapses: boutons, spines, dendritic trees. So, there's recently quite a bit of data from these.}
-  \tiny{
-    \begin{enumerate}
-      \item \fullcite{Chen2011}
-      \item \fullcite{Marik2010}
-      \item \fullcite{Yamahachi2009}
-      \item \fullcite{Hickmott2005}
+\begin{frame}[c]{Two possible theories}
+  \begin{itemize}
+    \item \enquote{unmasking} of pre-existing synaptic connections,
+      \pause{}
+    \item formation of new synapses (\alert{structural plasticity}).
+  \end{itemize}
+  \footnotetext[1]{\fullcite{Rasmusson1982}}
+\end{frame}
+\begin{frame}[c]{Imaging confirms structural plasticity in lesion studies}
+    \begin{itemize}
+      \item \fullcite{Darian-Smith1994}
+        \pause{}
+        \footnotesize{
+      \item \fullcite{Florence1998}
       \item \fullcite{Keck2008}
       \item \fullcite{Keck2011}
-      \item \fullcite{Trachtenberg2002}
-    \end{enumerate}
-  }
+      \item \fullcite{Marik2014}
+      }
+    \end{itemize}
 \end{frame}
-\begin{frame}[c]{Experimental protocol I}
+\begin{frame}[c]{Also confirms structural plasticity in the unlesioned adult brain}
+    \begin{itemize}
+      \item \fullcite{Holtmaat2005}
+        \pause{}
+        \footnotesize{
+      \item \fullcite{Stettler2006}
+      \item \fullcite{Marik2010}
+      \item \fullcite{Chen2012}
+      \item \fullcite{Villa2016}
+      }
+    \end{itemize}
+\end{frame}
+\begin{frame}[c]{So:}
+  \begin{itemize}
+    \item not only do the strengths of existing synapses change,
+    \item \alert{whole synapses are formed and removed.}
+      \pause{}
+    \item How? Why?
+  \end{itemize}
+\end{frame}
+\begin{frame}[c]{Aim}
+  \begin{center}
+    \textbf{Simulate a computational model of peripheral lesioning to study the reorganisation process.}
+  \end{center}
+  \pause{}
+  \begin{itemize}
+    \item A computational model allows us to:
+      \begin{itemize}
+        \item investigate every entity in the network: variables from neurons, their neurites, and all synapses,
+        \item modify any parameters to analyse changes in network behaviour: neuronal parameters, synaptic parameters,
+        \item run multiple analyses in parallel,
+        \item do it in less time than biological experiments\footnote[1]<2->{Simulations still take a week each, but that's still faster than a multi-month laboratory experiment.}.
+      \end{itemize}
+  \end{itemize}
+\end{frame}
+\section{Methods: How?}
+\begin{frame}[c]{Peripheral lesion protocol I:\ topographic mapping}
   \note[item]{The protocol is pretty standard. Here, for a study in the visual cortex, the retinal field of a rat or a mouse is mapped.}
   \begin{columns}
     \begin{column}{0.5\textwidth}
@@ -137,13 +175,20 @@
   \end{columns}
   \footnotetext[1]{\fullcite{Keck2008}}
 \end{frame}
-\begin{frame}[c]{Experimental protocol II:\ after peripheral lesion}
+\begin{frame}[c]{Peripheral lesion protocol II:\ after peripheral lesion}
   \note[item]{Then, a part of the retina is lesioned. This cuts off inputs to a part of the visual cortex, as shown in the first figure. This forms the Lesion Projection Zone (LPZ). By repeated imaging of the region over months, the reorganisation of the network is tracked.}
   \note[item]{Other lesion studies use similar methods: digit removal, whisker trimming, and so on---anything that cuts off projecting activity on to a set of neurons.}
+  \begin{figure}[h]
+    \centering
     \includegraphics[width=\textwidth]{99_images/keck-1-2c}%chktex 8
+  \end{figure}
+  \begin{itemize}
+    \item Dotted region encloses the Lesion Projection Zone (LPZ)
+    \item Inward \enquote{repair}.
+  \end{itemize}
     \footnotetext[1]{\fullcite{Keck2008}}
 \end{frame}
-\begin{frame}[c]{What we know from these experiments}
+\begin{frame}[c]{Data gathered from these experiments: summary}
   \note[item]{So, if this a simple schematic, of the regions around the LPZ, this is what we know from these studies.}
   \begin{columns}
     \begin{column}{0.3\textwidth}
@@ -153,123 +198,94 @@
     \pause{}
     \begin{column}{0.6\textwidth}
       \begin{itemize}
+        \item Inward repair of network.
         \item Massive disinhibition in the LPZ\@.
-          \note[item]{To permit a window for structural re-organisation.}
-        \item Gradual ingrowth of excitatory synapses from the peri-LPZ to the LPZ\@.
-          \note[item]{To make up for lost excitation.}
-        \item Gradual outgrowth of inhibitory synapses from the LPZ to the peri-LPZ\@.
-          \note[item]{To make up for lost inhibition.}
+        \item Gradual \alert{ingrowth of excitatory synapses} from the peri-LPZ to the LPZ\@.
+        \item Gradual \alert{outgrowth of inhibitory synapses} from the LPZ to the peri-LPZ\@.
       \end{itemize}
     \end{column}
   \end{columns}
 \end{frame}
-\begin{frame}[c]{Computational modelling:\ MSP:\ growth curve}
-  \note[item]{In the paper, we simply cite this bit and discuss it briefly, but here I'll explain it in more detail here.}
-  \note[item]{Computational modelling stems from evidence from decades years ago. It was established that outgrowth depends on the change in the Calcium concentration in neurons.}
-  \note[item]{So, in this figure, we see that a neurotransmitter causes a change in the Calcium of the neuron, and that causes some change in its outgrowth.}
-  \note[item]{What this suggests, is that there's an optimal level of Calcium for neurons to have \enquote{normal} growth.}
-  \note[item]{Based on this, Butz and van Ooyen came up with a framework for modelling structural plasticity. In this, they modelled the rate of change of synaptic elements as a Gaussian function of the neuron's Calcium concentration.}
+\begin{frame}[c]{Physiological cortical spiking network model}
+  \begin{figure}[h]
+    \def\svgwidth{0.7\textwidth}
+    \input{99_images/schematic.tex}
+  \end{figure}
+  \footnotetext[1]{\fullcite{Vogels2011}}
+\end{frame}
+\begin{frame}[t]{Neuron model: 8000 E, 2000 I neurons}
+  \begin{columns}
+    \begin{column}{0.6\textwidth}
+      \begin{itemize}
+        \item Point \enquote{leaky integrate and fire neurons}\footnotemark[1]{}, 
+        \item Bear neurites (\(z\)).
+      \end{itemize}
+    \end{column}
+    \begin{column}{0.4\textwidth}
+      \input{99_images/neuron-str-p.tex}
+    \end{column}
+  \end{columns}
+  \footnotetext[1]{\fullcite{Meffin2004}}
+\end{frame}
+\begin{frame}[t]{Modelling synapse formation and removal}
+  \begin{columns}
+    \begin{column}{0.6\textwidth}
+      \begin{itemize}
+        \item \(z^E_{post} + z^E_{pre}\)
+        \item \(z^I_{post} + z^I_{pre}\)
+        \item New synapses form when \alert{free} partner neurites are available.
+        \item Synapses are deleted if neurites are \alert{retracted} by the neuron.
+      \end{itemize}
+    \end{column}
+    \begin{column}{0.4\textwidth}
+      \input{99_images/neuron-str-p.tex}
+    \end{column}
+  \end{columns}
+\end{frame}
+\begin{frame}[t]{Model core: activity dependent neurite growth (\(z\))}
+  \vspace{0.4cm}
   \begin{columns}
     \begin{column}{0.5\textwidth}
       \centering
       \includegraphics[width=0.9\textwidth]{99_images/lipton1989.png}%chktex 8
     \end{column}
+    \pause{}
     \begin{column}{0.5\textwidth}
       \centering
-      \includegraphics[width=0.9\textwidth]{99_images/growth-curve-general.png}%chktex 8
+      \input{99_images/example-gaussian-1.tex}
     \end{column}
   \end{columns}
-  \footnotetext[2]{\fullcite{Lipton1989}}
-  \footnotetext[3]{\fullcite{Butz2013}}
+  \footnotetext[1]{\fullcite{Lipton1989}}
+  \footnotetext[2]<2->{\fullcite{Butz2013}}
 \end{frame}
-\begin{frame}[c]{Computational modelling:\ MSP:\ turnover}
-  \note[item]{A stable fixed point where nothing occurs. If activity is less, sprouting, if more, retraction, but if very less, retraction}.
-  \note[item]{Note that they applied the same for excitatory and inhibitory post-synaptic elements}
-  \note[item]{And, the same for all neurons: excitatory and inhibitory.}
-  \begin{columns}
-    \begin{column}{0.6\textwidth}
-      \begin{itemize}
-        \item Synaptic structures (\(z\)): excitatory \alert{and} inhibitory post-synaptic, excitatory \alert{or} inhibitory pre-synaptic elements.
-        \item New synapses form when \alert{free} plugs are available: (\(z > z_{conn}\))
-        \item Synapses are deleted if: (\(z < z_{conn}\))
-      \end{itemize}
-    \end{column}
-    \begin{column}{0.5\textwidth}
-      \centering
-      \includegraphics[width=0.9\textwidth]{99_images/growth-curve-general.png}%chktex 8
-    \end{column}
-  \end{columns}
-\end{frame}
-\begin{frame}[c]{Computational modelling II:\ Butz2013 replication}
-  \centering
-  \includegraphics[width=0.9\textwidth]{99_images/butz3.png}
-  \note[item]{They replicated the peripheral lesion study, as you see.}
-  \note[item]{You have repair from the outside in, and you have ingrowth of excitatory axons.}
-\end{frame}
-\begin{frame}[c]{Computational modelling II:\ Butz2013 results}
+\begin{frame}[t]{Growth curves: possibilities}
+  \vspace{0.4cm}
   \begin{columns}
     \begin{column}{0.5\textwidth}
-      \begin{figure}[h]
-        \input{99_images/growth-curves-den-butz.tex}
-      \end{figure}
+      \centering
+      \input{99_images/example-gaussian-1.tex}
     \end{column}
     \begin{column}{0.5\textwidth}
       \centering
-      \includegraphics[width=0.9\textwidth]{99_images/growth-curve-general.png}%chktex 8
+      \input{99_images/example-gaussian-2.tex}
     \end{column}
   \end{columns}
-  \note[item]{They suggested that post-synaptic elements should form at a lower activity level than pre-synaptic elements}
-  \note[item]{They used an arbitrary homeostatic point, for all neurons}
-  \note[item]{No discussion of inhibitory circuit here.}
-  \note[item]{No discussion of biological realism of the model either.}
+  \begin{center}
+    We must determine 6 sets of growth curves: 3 for E, 3 for I neurons. Each growth curve has 4 free parameters.
+  \end{center}
+  \footnotetext[1]{\fullcite{Sinha2019a}}
 \end{frame}
-\section{Methods: our approach}
-\begin{frame}[c]{Start with a biologically realistic network model}
-  \begin{figure}[h]
-    \def\svgwidth{0.7\textwidth}
-    \input{99_images/schematic.tex}
-  \end{figure}
-  \note[item]{We decided to start with a biologically realistic model: a cortical model proposed by Vogels et al.}
-  \note[item]{This includes realistic conductances, for example.}
-  \note[item]{This model is balanced by homeostatic inhibitory synaptic plasticity, and exhibits AI characteristics similar to cortical networks}
-  \note[item]{This model does not have any spatial information incorporated it, but to model the LPZ and spatial analysis we do need it.}
-  \footnotetext[4]{\fullcite{Vogels2011}}
-\end{frame}
-\begin{frame}[c]{Extensions}
-  \note[item]{A few of these were made while incorporating spatial information in the model, keeping in mind that we want' to keep the model as realistica as we can manage.}
-  \begin{itemize}
-    \item Probabilistic formation of synapses, also: \enquote{longer} inhibitory than excitatory connections\footnotemark{}.
-    \item Probabilistic deletion of synapses (incorporating evidence that stronger synapses have less likelihood of removal\footnotemark{}).
-    \item Further generalisation of growth curves.
-  \end{itemize}
-  \footnotetext[5]{Citation buried in my lab logs somewhere!}
-  \footnotetext[6]{\fullcite{Knott2006}}
-\end{frame}
-\begin{frame}[c]{Simulation protocol}
+\begin{frame}[c]{Replicate peripheral lesion protocol}
   \begin{figure}[h]
     \centering
     \input{99_images/simulation-stages.tex}
   \end{figure}
-  \note[item]{Explain the simulation protocol.}
 \end{frame}
 \section{Results and discussion}
 \begin{frame}[c]{Deafferentation and successful repair}
   \begin{figure}
       \centering
-      \resizebox{\textwidth}{!}{\input{99_images/201811221433-firing-rate-snapshots-E}}%
+      \resizebox{\textwidth}{!}{\input{99_images/201905131224-firing-rate-snapshots-E}}%
   \end{figure}
 \end{frame}
-\begin{frame}[c]{Deafferentation and repair:\ LPZ}
-  \begin{figure}
-      \centering
-      \resizebox{\textwidth}{!}{\input{99_images/201811221433-mean-firing-rates-lpz_c_I-E-zoomed}}%
-  \end{figure}
-\end{frame}
-\begin{frame}[c]{Deafferentation and repair:\ outside the LPZ}
-  \begin{figure}
-      \centering
-      \resizebox{\textwidth}{!}{\input{99_images/201811221433-mean-firing-rates-p_lpz_I-E-zoomed}}%
-  \end{figure}
-\end{frame}
-\end{document}
-
+\section{NeuroFedora: Free Software for Free Neuroscience}
