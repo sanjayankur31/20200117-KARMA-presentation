@@ -105,7 +105,7 @@
       }
   \end{itemize}
 \end{frame}
-\begin{frame}[c]{Two possible theories}
+\begin{frame}[c]{Two theories:}
   \begin{itemize}
     \item \enquote{unmasking} of pre-existing synaptic connections,
       \pause{}
@@ -151,12 +151,12 @@
   \end{center}
   \pause{}
   \begin{itemize}
-    \item A computational model allows us to:
+    \item A \alert{computational model} allows us to:
       \begin{itemize}
-        \item investigate every entity in the network: variables from neurons, their neurites, and all synapses,
-        \item modify any parameters to analyse changes in network behaviour: neuronal parameters, synaptic parameters,
+        \item investigate every entity in the network: variables from neurons, their neurites, all synapses,
+        \item modify any parameters to analyse changes in network behaviour: neuronal parameters, synaptic parameters, other network parameters,
         \item run multiple analyses in parallel,
-        \item do it in less time than biological experiments\footnote[1]<2->{Simulations still take a week each, but that's still faster than a multi-month laboratory experiment.}.
+        \item do it in less time than biological experiments\footnote[1]<2->{Simulations take a week each, but that's still faster than a multi-month laboratory experiment.}.
       \end{itemize}
   \end{itemize}
 \end{frame}
@@ -199,26 +199,28 @@
     \begin{column}{0.6\textwidth}
       \begin{itemize}
         \item Inward repair of network.
-        \item Massive disinhibition in the LPZ\@.
         \item Gradual \alert{ingrowth of excitatory synapses} from the peri-LPZ to the LPZ\@.
         \item Gradual \alert{outgrowth of inhibitory synapses} from the LPZ to the peri-LPZ\@.
       \end{itemize}
     \end{column}
   \end{columns}
 \end{frame}
-\begin{frame}[c]{Physiological cortical spiking network model}
+\begin{frame}[c]{Cortical spiking network model: 8000 E, 2000 I neurons}
   \begin{figure}[h]
     \def\svgwidth{0.7\textwidth}
-    \input{99_images/schematic.tex}
+    \input{99_images/schematic.tex}\vspace{-0.5cm}
   \end{figure}
+  \begin{center}
+    Exhibits cortical \alert{Asynchronous Irregular (AI)} firing.
+  \end{center}
   \footnotetext[1]{\fullcite{Vogels2011}}
 \end{frame}
-\begin{frame}[t]{Neuron model: 8000 E, 2000 I neurons}
+\begin{frame}[t]{Neuron model}
   \begin{columns}
     \begin{column}{0.6\textwidth}
       \begin{itemize}
-        \item Point \enquote{leaky integrate and fire neurons}\footnotemark[1]{}, 
-        \item Bear neurites (\(z\)).
+        \item Single compartment, point \enquote{leaky integrate and fire neurons}\footnotemark[1]{},
+        \item Host neurites (\(z\)).
       \end{itemize}
     \end{column}
     \begin{column}{0.4\textwidth}
@@ -242,7 +244,7 @@
     \end{column}
   \end{columns}
 \end{frame}
-\begin{frame}[t]{Model core: activity dependent neurite growth (\(z\))}
+\begin{frame}[t]{Neurite growth (\(z\)) as a function of neuronal activity}
   \vspace{0.4cm}
   \begin{columns}
     \begin{column}{0.5\textwidth}
@@ -252,11 +254,28 @@
     \pause{}
     \begin{column}{0.5\textwidth}
       \centering
+      \begin{itemize}
+        \item \([Ca^{2+}]\) correlates with neuronal activity,
+        \item serves a homeostatic function.
+      \end{itemize}
+    \end{column}
+  \end{columns}
+  \footnotetext[1]{\fullcite{Lipton1989}}
+\end{frame}
+\begin{frame}[t]{Neurite growth (\(z\)) modelled as a Guassian function of activity}
+  \vspace{0.4cm}
+  \begin{columns}
+    \begin{column}{0.5\textwidth}
+      \centering
+      \includegraphics[width=0.9\textwidth]{99_images/lipton1989.png}%chktex 8
+    \end{column}
+    \begin{column}{0.5\textwidth}
+      \centering
       \input{99_images/example-gaussian-1.tex}
     \end{column}
   \end{columns}
   \footnotetext[1]{\fullcite{Lipton1989}}
-  \footnotetext[2]<2->{\fullcite{Butz2013}}
+  \footnotetext[2]{\fullcite{Butz2013}}
 \end{frame}
 \begin{frame}[t]{Growth curves: possibilities}
   \vspace{0.4cm}
@@ -271,9 +290,9 @@
     \end{column}
   \end{columns}
   \begin{center}
-    We must determine 6 sets of growth curves: 3 for E, 3 for I neurons. Each growth curve has 4 free parameters.
+    4 free parameters describe each growth curve. We must determine 6 sets of growth curves: 3 for E, 3 for I neurons.
   \end{center}
-  \footnotetext[1]{\fullcite{Sinha2019a}}
+  \footnotetext[1]{\fullcite{Sinha2019}}
 \end{frame}
 \begin{frame}[c]{Replicate peripheral lesion protocol}
   \begin{figure}[h]
@@ -281,11 +300,181 @@
     \input{99_images/simulation-stages.tex}
   \end{figure}
 \end{frame}
-\section{Results and discussion}
-\begin{frame}[c]{Deafferentation and successful repair}
+\section{Results: a few years later}
+\begin{frame}[c]{Reproduction of deafferentation and repair}
   \begin{figure}
       \centering
-      \resizebox{\textwidth}{!}{\input{99_images/201905131224-firing-rate-snapshots-E}}%
+      \includegraphics[width=0.9\textwidth]{99_images/keck-1-2c}\\%chktex 8
+      \quad{}\resizebox{0.9\textwidth}{!}{\input{99_images/201811221433-firing-rate-snapshots-E}}%
   \end{figure}
 \end{frame}
+\begin{frame}[c]{Reproduction of ingrowth of excitatory projections}
+  \begin{figure}
+      \centering
+      \resizebox{0.9\textwidth}{!}{\input{99_images/201908061027-75-conns-top-EE-lpz_c_E-in}}\\\vspace{0.2cm}%
+      \resizebox{0.8\textwidth}{!}{\input{99_images/201908061027-75-connection-rowstacked-histograms-E-to-lpz_c_E}}%
+  \end{figure}
+\end{frame}
+\begin{frame}[c]{Reproduction of outgrowth of inhibitory projections}
+  \begin{figure}
+      \centering
+      \resizebox{0.9\textwidth}{!}{\input{99_images/201908061027-75-conns-top-IE-p_lpz_E-in}}\\\vspace{0.2cm}%
+      \resizebox{0.8\textwidth}{!}{\input{99_images/201908061027-75-connection-rowstacked-histograms-I-to-p_lpz_E}}%
+  \end{figure}
+\end{frame}
+\begin{frame}[c]{Resultant activity dependent growth rules: post-synaptic}
+  \begin{columns}
+    \begin{column}{0.6\textwidth}
+      \centering
+      \vspace{0.4cm}
+      \input{99_images/growth-curves-den-ours}
+    \end{column}
+    \pause{}
+    \begin{column}{0.5\textwidth}
+      \begin{itemize}
+        \item E:\ formed when activity is less than, removed when more than optimal.
+        \item I:\ formed when activity is more than, removed when less than optimal.
+      \end{itemize}
+    \end{column}
+  \end{columns}\vspace{-0.5cm}
+  \pause{}
+  \begin{center}
+    Neurons attempt to \alert{stabilise their activity} by rebalancing excitatory and inhibitory inputs.
+  \end{center}
+  \footnotetext[1]<4->{\fullcite{Richards2005}}
+  \footnotetext[2]<4->{\fullcite{Knott2002}}
+\end{frame}
+\begin{frame}[c]{Resultant activity dependent growth rules: pre-synaptic}
+  \begin{columns}
+    \begin{column}{0.6\textwidth}
+      \centering
+      \vspace{0.4cm}
+      \input{99_images/growth-curves-axonal-ours}
+    \end{column}
+    \pause{}
+    \begin{column}{0.5\textwidth}
+      \begin{itemize}
+        \item E:\ formed when activity is more than, removed when less than optimal.
+        \item I:\ formed when activity is less than, removed when more than optimal.
+      \end{itemize}
+    \end{column}
+  \end{columns}\vspace{-0.2cm}
+  \pause{}
+  \begin{center}
+    Neurons attempt to \alert{project their activity} on to other neurons in the network.
+  \end{center}
+  \footnotetext[1]<4->{\fullcite{Perez1996}}
+  \footnotetext[2]<4>{\fullcite{Schuemann2013}}
+\end{frame}
+\begin{frame}[c]{Structural and synaptic plasticity are both necessary}
+  \begin{itemize}
+    \item Only synaptic plasticity: no repair.
+      \pause{}
+    \item Only structural plasticity: repair, but network does not stabilise; results in high, epileptic firing rates.
+      \pause{}
+  \end{itemize}
+  \begin{center}
+  While \alert{structural plasticity} is required for \alert{large scale reorganisation} in synaptic connectivity, \alert{synaptic plasticity} is required to \alert{fine tune} the balance between excitation and inhibition to stabilise the network.
+  \end{center}
+\end{frame}
+\begin{frame}[c]{Results: summary}
+  \begin{itemize}
+    \item Reproduced peripheral lesion experiments in a computational model.
+    \item Suggested testable hypotheses on the activity dependent growth of all neurites.
+    \item Proposed that individual neurons may stabilise their activities by modifying their input connectivity.
+    \item Indicated that structural and synaptic plasticity both serve distinct roles and are both necessary.
+  \end{itemize}
+\end{frame}
+\begin{frame}[c]{Limitations: summary}
+  \begin{itemize}
+    \item Point, single compartment neurons: ignore \alert{Calcium compartmentalisation},
+    \item No \alert{growth factors} were taken into consideration,
+    \item Other plasticity mechanisms\ldots{}
+  \end{itemize}
+\end{frame}
 \section{NeuroFedora: Free Software for Free Neuroscience}
+\begin{frame}[c]{Modern neuroscience}
+  \begin{itemize}
+    \item is \alert{heavily software dependent}.
+    \item software is frequently \alert{complex} to install, deploy, maintain, update.
+    \item software is \alert{rarely checked for correctness (!)}.
+      \pause{}
+    \item Neuroscientists hail from \alert{diverse academic backgrounds}.
+      \pause{}
+    \item Scientists are trying to move towards being more \alert{Open}:
+      \begin{itemize}
+        \item data, methods, analysis, simulations, publishing, collaboration\ldots{}
+      \end{itemize}
+  \end{itemize}
+\end{frame}
+\begin{frame}[c]{Free/Open Source Software vs Open Science}
+  \begin{center}
+    Users should have the freedom to \alert{share, study, and modify} software\footnotemark[1].\\
+    \vspace{1cm}
+    \alert{Everyone} should have the freedom to \alert{share, study, and modify} scientific material\footnotemark[2].
+  \end{center}
+  \footnotetext[1]{\href{https://u.fsf.org/user-liberation}{Free software foundation: fsf.org}}
+  \footnotetext[2]{\href{http://opensourceforneuroscience.org/}{Open source for neuroscience: opensourceforneuroscience.org}}
+\end{frame}
+\begin{frame}[c]{NeuroFedora: volunteer driven initiative}
+  \begin{itemize}
+    \item Enable \alert{Free/Open science}:
+      \pause{}
+      \begin{itemize}
+        \item provide researchers (end-users):
+          \begin{itemize}
+            \item ready to use \alert{tested} tools.
+          \end{itemize}
+          \pause{}
+        \item help developers (upstream)
+          \begin{itemize}
+            \item collect feedback from users.
+            \item make software improvements.
+            \item implement software development standards.
+          \end{itemize}
+      \end{itemize}
+  \end{itemize}
+\end{frame}
+\begin{frame}[c]{Current status: software}
+  \begin{itemize}
+    \item Ready to download ISO for computational neuroscience,
+      \pause{}
+    \item Plethora of tools ready to install and use:
+      \begin{itemize}
+        \item \alert{Computational modelling:} NEST, Neuron, Genesis, Brian, LEMS, COPASI\ldots
+        \item \alert{Neuroimaging:} dicomanonymiser, dipy, fsleyes, jnifti, mne-bids, nilearn, nistats, octave-dicom, pybids, petlink, pynetdicom\ldots
+        \item \alert{Utilities}: \LaTeX{}, the Python science stack, daily use productivity tools\ldots
+      \end{itemize}
+      \pause{}
+    \item \alert{180} tools in queue\footnotemark[1]
+  \end{itemize}
+  \footnotetext[1]{\url{https://pagure.io/neuro-sig/NeuroFedora/issues}}
+\end{frame}
+\begin{frame}[c]{Current status: team}
+  \begin{itemize}
+      \item 15 \alert{volunteers:} mainly Free/Open Source Software enthusiasts.
+      \item Limited domain knowledge.
+  \end{itemize}
+\end{frame}
+\begin{frame}[c]{NeuroFedora: links}
+  \begin{itemize}
+    \item Documentation: \url{https://neuro.fedoraproject.org} 
+    \item Blog \url{https://neuroblog.fedoraproject.org} 
+    \item IRC channel: \#fedora-neuro on Freenode.net\footnotemark.
+    \item Telegram channel: @NeuroFedora\footnotemark.
+    \item Mailing list on lists.fedoraproject.org\footnotemark.
+  \end{itemize}
+  \footnotetext[1]{\href{https://webchat.freenode.net/?channels=\#fedora-neuro}{\#fedora-neuro on Freenode}}
+  \footnotetext[2]{\href{https://t.me/NeuroFedora}{@NeuroFedora on Telegram}}
+  \footnotetext[3]{\href{https://lists.fedoraproject.org/admin/lists/neuro-sig@lists.fedoraproject.org/}{neuro-sig@lists.fedoraproject.org}}
+\end{frame}
+\begin{frame}[c]{Search: NeuroFedora}
+  \begin{figure}[h]
+    \centering
+    \includegraphics[keepaspectratio,height=0.5\textheight]{99_images/NeuroFedoraLogo01.png}
+  \end{figure}
+  \begin{center}
+    \url{neuro.fedoraproject.org}
+  \end{center}
+\end{frame}
+\end{document}
